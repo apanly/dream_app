@@ -89,7 +89,9 @@
                     if( tmp_pos_idx > -1 ){
                         tmp_src = tmp_src.substr(0,tmp_pos_idx);
                     }
-                    this.setAttribute("data-src",public_ops.buildPicUrl( tmp_src ,{ w:public_ops.getDevicecScreenWidth() } ) );
+                    var tmp_screen_width = public_ops.getDevicecScreenWidth();
+                    this.setAttribute("style","width:"+(tmp_screen_width-50)+"px;");
+                    this.setAttribute("data-src",public_ops.buildPicUrl( tmp_src ,{ w:tmp_screen_width } ) );
                     public_ops.lazyload( this );
                     //console.log(  );
                     //this.setAttribute("src",public_ops.buildPicUrl( tmp_src ,{ w:public_ops.getDevicecScreenWidth() } ) );
