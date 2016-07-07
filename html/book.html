@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Hello MUI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!--标准mui.css-->
+    <link rel="stylesheet" type="text/css" href="../css/mui.min.css">
+    <!--iconfont字体-->
+    <link rel="stylesheet" href="../css/iconfont.css">
+</head>
+
+<body>
+<header id="header" class="mui-bar mui-bar-nav">
+    <h1 class="mui-title"> 图书馆 -- 编程浪子的博客</h1>
+    <a class="mui-icon  iconfont  icon-saoma  mui-pull-right qrcode_scan"></a>
+</header>
+<div class="mui-content">
+    <ul class="mui-table-view mui-grid-view">
+        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <a href="#">
+                <img class="mui-media-object" src="../images/shuijiao.jpg">
+                <div class="mui-media-body">幸福就是可以一起睡觉</div></a></li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <a href="#">
+                <img class="mui-media-object" src="../images/muwu.jpg">
+                <div class="mui-media-body">想要一间这样的木屋，静静的喝咖啡</div></a></li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <a href="#"><img class="mui-media-object" src="../images/cbd.jpg">
+                <div class="mui-media-body">Color of SIP CBD</div></a></li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <a href="#">
+                <img class="mui-media-object" src="../images/yuantiao.jpg">
+                <div class="mui-media-body">静静看这世界</div></a></li>
+    </ul>
+</div>
+<script src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript">
+    mui.init({
+        swipeBack: true //启用右滑关闭功能
+    });
+    var openw = null;
+    mui.plusReady(function() {
+        mui("#header").on("tap",".qrcode_scan",function(){
+            var ws = {};
+            var id = "barcode_scan.html";
+            ws.scrollIndicator||(ws.scrollIndicator='none');
+            ws.scalable||(ws.scalable=false);
+            var pre='';
+            openw = plus.webview.create(pre+id,id,ws);
+            openw.addEventListener('loaded',function(){//页面加载完成后才显示
+//		setTimeout(function(){//延后显示可避免低端机上动画时白屏
+                openw.show('pop-in');
+//		},200);
+            },false);
+
+            openw.addEventListener('close',function(){//页面关闭后可再次打开
+                openw=null;
+            },false);
+        });
+    });
+
+</script>
+</body>
+</html>

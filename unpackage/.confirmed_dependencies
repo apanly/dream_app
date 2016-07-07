@@ -1,0 +1,72 @@
+{
+  "html/blog.html": {
+    "href": "html/blog.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/app.css",
+      "js/mui.min.js",
+      "images/cbd.jpg",
+      "images/yuantiao.jpg",
+      "images/shuijiao.jpg",
+      "images/muwu.jpg"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "html/book.html": {
+    "href": "html/book.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/app.css",
+      "js/mui.min.js",
+      "images/shuijiao.jpg",
+      "images/muwu.jpg",
+      "images/cbd.jpg",
+      "images/yuantiao.jpg"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "html/media.html": {
+    "href": "html/media.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/app.css",
+      "js/mui.min.js",
+      "images/shuijiao.jpg",
+      "images/muwu.jpg",
+      "images/cbd.jpg",
+      "images/yuantiao.jpg"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "html/about.html": {
+    "href": "html/about.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/app.css",
+      "css/feedback.css",
+      "js/mui.min.js",
+      "js/mui.view.js",
+      "js/feedback.js",
+      "images/logo.png"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "index.html": {
+    "href": "index.html",
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.min.js"
+    ],
+    "refer": [
+      "html/blog.html",
+      "html/book.html",
+      "html/media.html",
+      "html/about.html"
+    ],
+    "priority": 0
+  }
+}

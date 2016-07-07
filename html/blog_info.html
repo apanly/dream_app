@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Hello MUI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!--标准mui.css-->
+    <link rel="stylesheet" type="text/css" href="../css/mui.min.css">
+    <!--iconfont字体-->
+    <link rel="stylesheet" href="../css/iconfont.css">
+</head>
+
+<body>
+<header id="header" class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title"> 博文详情 -- 编程浪子的博客</h1>
+    <a class="mui-icon  iconfont  icon-fenxiang  mui-pull-right qrcode_scan"></a>
+</header>
+<div class="mui-content">
+    <div class="mui-card blog_content_wrap" style="margin: 10px 0 0 0 ;">
+        <div class="mui-card-header mui-card-media">
+            <img src="http://dcloud.io/hellomui/images/logo.png">
+            <div class="mui-media-body">
+                小M
+                <p>发表于 2016-06-30 15:30</p>
+            </div>
+        </div>
+        <div class="mui-card-content" style="padding: 5px 10px ;">
+            ...... 
+        </div>
+        <div class="mui-card-footer">
+            <a class="mui-card-link">Like</a>
+            <a class="mui-card-link">Comment</a>
+            <a class="mui-card-link">Read more</a>
+        </div>
+    </div>
+</div>
+<script src="../js/mui.min.js"></script>
+<script src="../js/md5.min.js"></script>
+<script src="../js/public.js"></script>
+<script type="text/javascript">
+    mui.init({
+        swipeBack: true //启用右滑关闭功能
+    });
+    mui.plusReady(function(){
+//        var params = plus.webview.currentWebview();
+//        console.log(params.blog_id );
+//        mui.alert(params.blog_id);
+    });
+
+
+    window.addEventListener('getInfo',function(event){
+        blog_info_ops.getBlogInfo(event.detail.id);//获得事件参数
+    });
+
+    var blog_info_ops = {
+        getBlogInfo:function( blog_id ){
+			var that = this;
+            mui.ajax(  public_ops.buildUrl("/default/info"),{
+                type:'post',
+                data:{ id:blog_id },
+                dataType:'json',
+                success:function( res ){
+                    if( res.code != 200 ){
+                        public_ops.tip(res.msg);
+                        return;
+                    }
+
+                    var info = res.data.info;
+                    document.querySelector(".blog_content_wrap .mui-card-header .mui-media-body").innerHTML = info['author']["name"]+"<p>更新于 "+info['updated_time']+"</p>";
+                    document.querySelector("#header .mui-title").innerHTML = info.title;
+                    document.querySelector(".blog_content_wrap .mui-card-content").innerHTML = info.content;
+                    that.adaptImage();
+                }
+            });
+        },
+        adaptImage:function(){
+                mui(".blog_content_wrap .mui-card-content img").each(function(){
+                    this.setAttribute("data-src",this.getAttribute("src") );
+                    this.setAttribute("style","width:100px;height:75px;");
+                    this.setAttribute("src","../images/blog/loading.png");
+
+                });
+        		mui(".blog_content_wrap .mui-card-content img").each(function(){
+        			var tmp_src = this.getAttribute("data-src");
+                    var tmp_pos_idx = tmp_src.indexOf("?");
+                    if( tmp_pos_idx > -1 ){
+                        tmp_src = tmp_src.substr(0,tmp_pos_idx);
+                    }
+                    this.setAttribute("data-src",public_ops.buildPicUrl( tmp_src ,{ w:public_ops.getDevicecScreenWidth() } ) );
+                    public_ops.lazyload( this );
+                    //console.log(  );
+                    //this.setAttribute("src",public_ops.buildPicUrl( tmp_src ,{ w:public_ops.getDevicecScreenWidth() } ) );
+        		});
+        }
+    };
+</script>
+</body>
+</html>

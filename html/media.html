@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Hello MUI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!--标准mui.css-->
+    <link rel="stylesheet" type="text/css" href="../css/mui.min.css">
+    <!--App自定义的css-->
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+</head>
+
+<body>
+<header id="header" class="mui-bar mui-bar-nav">
+    <h1 class="mui-title"> 我的生活 -- 编程浪子的博客</h1>
+    <a class="mui-icon  mui-icon-camera  camera mui-pull-right"></a>
+</header>
+<div class="mui-content">
+    <ul class="mui-table-view mui-grid-view">
+        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <a href="#">
+                <img class="mui-media-object" src="../images/shuijiao.jpg">
+                <div class="mui-media-body">幸福就是可以一起睡觉</div>
+            </a></li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <a href="#">
+                <img class="mui-media-object" src="../images/muwu.jpg">
+                <div class="mui-media-body">想要一间这样的木屋，静静的喝咖啡</div>
+            </a></li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <a href="#"><img class="mui-media-object" src="../images/cbd.jpg">
+                <div class="mui-media-body">Color of SIP CBD</div>
+            </a></li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-6">
+            <a href="#">
+                <img class="mui-media-object" src="../images/yuantiao.jpg">
+                <div class="mui-media-body">静静看这世界</div>
+            </a></li>
+    </ul>
+</div>
+<script src="../js/mui.min.js"></script>
+<script src="../js/public.js"></script>
+<script type="text/javascript">
+    mui.init({
+        swipeBack: true //启用右滑关闭功能
+    });
+    mui.plusReady(function () {
+
+        mui("#header").on("tap", ".camera", function () {
+            var btnArray = [
+                {title: "拍照"},
+                {title: "相册"}
+            ];
+            plus.nativeUI.actionSheet({
+                title: "选择照片",
+                cancel: "取消",
+                buttons: btnArray
+            }, function (e) {
+                var index = e.index;
+                var text = "你刚点击了\"";
+                switch (index) {
+                    case 0:
+                        text += "取消";
+                        break;
+                    case 1:
+                        text += "拍照";
+                        var cmr = plus.camera.getCamera();
+                        //var res = cmr.supportedImageResolutions[1];,{ resolution:res }
+                        cmr.captureImage(
+                                function (path) {
+                                    plus.gallery.save(path);
+                                    camera_callback.success(path);
+                                },
+                                function (error) {
+                                    camera_callback.err(error);
+                                });
+                        break;
+                    case 2:
+                        text += "选取现有的";
+                        plus.gallery.pick(
+                                function (path) {
+                                    camera_callback.success(path);
+                                },
+                                function (error) {
+                                    camera_callback.err(error);
+                                }, {filter: "image"});
+                        break;
+                }
+            });
+        });
+    });
+
+    var camera_callback = {
+        success: function (path) {
+            plus.nativeUI.showWaiting("正在上传，请稍等!!",{ modal:false });
+            var task = plus.uploader.createUpload(
+                    public_ops.buildUrl("/upload/media"),
+                    { method:"POST",blocksize:204800,priority:100 },
+                    function ( t, status ) {
+                        plus.nativeUI.closeWaiting();
+                        // 上传完成
+                        if ( status == 200 ) {
+                            //t.url
+                        }
+                    }
+            );
+            task.addFile( path, {key:"richmedia"} );
+            task.addData( "token", "JRf7gJmxzFm7Uu5X" );
+            //task.addEventListener( "statechanged", onStateChanged, false );
+            task.start();
+
+        },
+        err: function (error) {
+            mui.alert(error.message);
+        }
+    };
+
+</script>
+</body>
+</html>

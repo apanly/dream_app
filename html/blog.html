@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Hello MUI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!--标准mui.css-->
+    <link rel="stylesheet" type="text/css" href="../css/mui.min.css">
+    <!--App自定义的css-->
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <style>
+        .mui-search .mui-placeholder{
+            text-align: left;
+        }
+        .mui-pull-top-tips {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            margin-left: -25px;
+            width: 40px;
+            height: 40px;
+            border-radius: 100%;
+            z-index: 1;
+        }
+
+        .mui-bar ~ .mui-pull-top-tips {
+            top: 24px;
+        }
+
+        .mui-pull-top-wrapper {
+            width: 42px;
+            height: 42px;
+            display: block;
+            text-align: center;
+            background-color: #efeff4;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            background-clip: padding-box;
+            box-shadow: 0 4px 10px #bbb;
+            overflow: hidden;
+        }
+
+        .mui-pull-top-tips.mui-transitioning {
+            -webkit-transition-duration: 200ms;
+            transition-duration: 200ms;
+        }
+
+        .mui-pull-top-tips .mui-pull-loading {
+            margin: 0;
+        }
+
+        .mui-pull-top-wrapper .mui-icon,
+        .mui-pull-top-wrapper .mui-spinner {
+            margin-top: 7px;
+        }
+
+        .mui-pull-top-wrapper .mui-icon.mui-reverse {
+            /*-webkit-transform: rotate(180deg) translateZ(0);*/
+        }
+
+        .mui-pull-bottom-tips {
+            text-align: center;
+            background-color: #efeff4;
+            font-size: 15px;
+            line-height: 40px;
+            color: #777;
+        }
+
+        .mui-pull-top-canvas {
+            overflow: hidden;
+            background-color: #fafafa;
+            border-radius: 40px;
+            box-shadow: 0 4px 10px #bbb;
+            width: 40px;
+            height: 40px;
+            margin: 0 auto;
+        }
+
+        .mui-pull-top-canvas canvas {
+            width: 40px;
+        }
+
+        .mui-slider-indicator.mui-segmented-control {
+            background-color: #efeff4;
+        }
+    </style>
+</head>
+
+<body>
+<header id="header" class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-search mui-pull-left"></a>
+    <h1 class="mui-title">编程浪子的博客</h1>
+    <a class="mui-icon  mui-icon-mic speech mui-pull-right"></a>
+</header>
+<div class="mui-content">
+    <div id="banner" class="mui-slider" style="height: 210px;">
+        <div class="mui-slider-group mui-slider-loop">
+            <div class="mui-slider-item">
+                <a href="javascript:void(0);">
+                    <img src="../images/blog/loading.png">
+                </a>
+            </div>
+        </div>
+        <div class="mui-slider-indicator mui-text-right"></div>
+    </div>
+    <!--下拉刷新容器-->
+    <div id="pullrefresh" class="mui-scroll-wrapper" style="top:254px;">
+        <div class="mui-scroll">
+            <!--数据列表-->
+            <ul class="mui-table-view mui-table-view-chevron">
+                <img class="mui-media-object mui-pull-left" src="../images/blog/loading.png" style="height: 210px;line-height:210px;width: 100%;max-width: 100%;">
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="../js/mui.min.js"></script>
+<script src="../js/md5.min.js"></script>
+<script src="../js/public.js"></script>
+<script src="../js/mui.pullToRefresh.js"></script>
+<script src="../js/mui.pullToRefresh.material.js"></script>
+
+<script type="text/javascript">
+    //初始化预加载详情页面
+    mui.init();
+
+    mui.plusReady(function () {
+        blog_ops.getBannerList();
+        blog_ops.setBlogList();
+
+        var blog_info_id = "blog_info.html";
+        var blog_info = mui.preload({
+            id: blog_info_id,
+            url: blog_info_id
+        });
+
+        mui(".mui-table-view").on('tap', '.mui-table-view-cell', function () {
+            //传值给详情页面，通知加载新数据需要预加载
+            if (!blog_info) {
+                blog_info = plus.webview.getWebviewById(blog_info_id);
+            }
+            var attrs =  this.attributes ;
+            var output = "";
+            for(var i = attrs.length - 1; i >= 0; i--) {
+                output += attrs[i].name + "->" + attrs[i].value;
+            }
+
+            mui.fire(blog_info, 'getInfo', {id: this.getAttribute("data") });
+            mui.openWindow({
+                id: blog_info_id
+            });
+        });
+
+        mui("#header").on("tap", ".speech", function () {
+            blog_ops.setSpeech();
+        });
+
+    });
+
+
+
+    var blog_ops = {
+        getBannerList: function () {
+            var that = this;
+            if (!public_ops.networkIsAvailable()) {
+                public_ops.tip("网络不可用，请联网之后再用！！");
+                return;
+            }
+
+            mui.ajax( public_ops.buildUrl("/default/banner"),{
+                type:'post',
+                dataType:'json',
+                success:function( res ){
+                    if (res.code != 200) {
+                        public_ops.tip(res.msg);
+                        return;
+                    }
+
+                    if (res.data.list.length < 1) {
+                        return;
+                    }
+
+                    var banner_list = new Array();
+                    <!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+                    banner_list.push(res.data.list[res.data.list.length - 1]);
+                    for (var idx in  res.data.list) {
+                        banner_list.push(res.data.list[idx]);
+                    }
+                    <!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+                    banner_list.push(res.data.list[0]);
+
+                    var fragment = document.createDocumentFragment();
+                    var fragment_indicator = document.createDocumentFragment();
+                    var div, info;
+                    var banner_length = banner_list.length;
+
+                    for (idx in  banner_list) {
+                        info = banner_list[idx];
+                        div = document.createElement('div');
+                        if (idx == 0 || idx == (banner_length - 1)) {
+                            div.className = 'mui-slider-item mui-slider-item-duplicate';
+                        } else {
+                            div.className = 'mui-slider-item';
+                        }
+                        div.style = 'height:210px;';
+                        tmp_image_url = public_ops.buildPicUrl(info.image_url, {
+                            'h': 210,
+                            'w': public_ops.getDevicecScreenWidth()
+                        });
+                        div.innerHTML = '<a href="javascript:void(0);"> ' +
+                                '<img src="../images/blog/loading.png"  data-src="' + tmp_image_url + '"  height="210"> ' +
+                                '<p class="mui-slider-title">' + info.title + '</p> ' +
+                                '</a>';
+                        fragment.appendChild(div);
+                    }
+
+                    var real_length = res.data.list.length;
+                    for (idx = 0; idx < real_length; idx++) {
+                        div = document.createElement('div');
+                        if (idx == 0) {
+                            div.className = 'mui-indicator mui-active';
+                        } else {
+                            div.className = 'mui-indicator';
+                        }
+                        fragment_indicator.appendChild(div);
+                    }
+
+                    document.querySelector('#banner.mui-slider .mui-slider-group').innerHTML = '';
+                    document.querySelector('#banner.mui-slider .mui-slider-group').appendChild(fragment);
+                    document.querySelector('#banner.mui-slider .mui-slider-indicator').appendChild(fragment_indicator);
+
+
+                    mui("#banner.mui-slider .mui-slider-group img").each( function(){
+                        public_ops.lazyload(this);
+                    });
+                    /*轮播图片*/
+                    mui("#banner").slider({
+                        interval: 5000
+                    });
+                }
+            } );
+        },
+        setBlogList:function() {
+            /*上拉刷新*/
+            var that = this;
+            this.p = 1;
+
+            var deceleration = mui.os.ios ? 0.003 : 0.0009;//阻尼系数
+            mui('.mui-scroll-wrapper').scroll({
+                bounce: false,
+                indicators: true, //是否显示滚动条
+                deceleration: deceleration
+            });
+
+            mui(document.querySelector('.mui-scroll')).pullToRefresh({
+                up: {
+                    auto:true,
+                    contentrefresh: '正在加载...',
+                    callback: function () {
+                        var ul = this.element.querySelector('.mui-table-view');
+                        var fragment = that.getBlogList();
+                        var childCount = fragment.childElementCount;
+
+                        if( that.p <= 2 ){
+                            ul.innerHTML = '';
+                        }
+                        ul.appendChild( fragment );
+                        if( childCount < 1){
+                            this.endPullUpToRefresh(true);
+                        }else{
+                            this.endPullUpToRefresh( );
+                        }
+
+                    }
+                }
+            });
+        },
+        getBlogList:function(){
+            var that = this;
+            var fragment = document.createDocumentFragment();
+            if (!public_ops.networkIsAvailable()) {
+                public_ops.tip("网络不可用，请联网之后再用！！");
+                return fragment;
+            }
+
+            mui.ajax( public_ops.buildUrl("/default/blog"),{
+                type:'get',
+                data:{ p: that.p },
+                dataType:'json',
+                async:false,
+                success:function( res ){
+                    if( res.code != 200 ){
+                        public_ops.tip(res.msg);
+                        return;
+                    }
+
+                    that.p++;//翻页加加
+
+                    if (res.data.list.length < 1) {
+                        return;
+                    }
+
+                    var li,info;
+                    var list = res.data.list;
+                    for (var idx in list ) {
+                        info = list[ idx ];
+                        li = document.createElement('li');
+                        li.setAttribute("data",info['id']);
+                        li.className = 'mui-table-view-cell mui-media';
+                        tmp_image_url = public_ops.buildPicUrl(info.image_url, { 'h': 50, 'w': 50 });
+                        li.innerHTML = '<a class="mui-navigate-right" href="javascript:void(0);">' +
+                                '<img class="mui-media-object mui-pull-left" src="'+tmp_image_url+'"> ' +
+                                '<div class="mui-media-body">'+info.title+' <p class="mui-ellipsis">'+info.content+'</p> </div> ' +
+                                '</a>';
+
+                        fragment.appendChild(li);
+                    }
+                }
+            });
+            return fragment;
+        },
+        setSpeech:function(){
+            if( plus.os.name=='Android' && navigator.userAgent.indexOf('StreamApp')>0 ){
+                public_ops.tip('当前环境暂不支持语音识别插件');
+                return;
+            }
+            var options = {};
+            options.engine = 'iFly';
+            plus.speech.startRecognize( options, function ( s ) {
+                public_ops.tip( s );
+            }, function ( e ) {
+                public_ops.tip( "语音识别失败："+e.message );
+            } );
+        }
+    };
+
+</script>
+</body>
+</html>
