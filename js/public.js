@@ -57,7 +57,7 @@ var public_ops = {
         return tmp_int * 50;
     },
     lazyload: function (obj) {
-        var debug = true; // 默认打印调试日志
+        var debug = false; // 默认打印调试日志
         if (obj.getAttribute('data-loaded')) {
             return;
         }
