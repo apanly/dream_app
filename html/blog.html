@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Hello MUI</title>
+    <title>编程浪子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -11,12 +11,11 @@
     <link rel="stylesheet" type="text/css" href="../css/mui.min.css">
     <!--App自定义的css-->
     <link rel="stylesheet" type="text/css" href="../css/app.css"/>
-
 </head>
 
 <body>
 <header id="header" class="mui-bar mui-bar-nav">
-    <a class="mui-action-back mui-icon mui-icon-search mui-pull-left"></a>
+    <a class="mui-icon mui-icon-search mui-pull-left"></a>
     <h1 class="mui-title">编程浪子的博客</h1>
     <a class="mui-icon  mui-icon-mic speech mui-pull-right"></a>
 </header>
@@ -37,6 +36,9 @@
             <ul class="mui-table-view mui-table-view-chevron">
                 <img class="mui-media-object mui-pull-left" src="../images/blog/loading.png" style="height: 210px;line-height:210px;width: 100%;max-width: 100%;">
             </ul>
+            <div class="more_blog" style="text-align: center;height: 35px;line-height: 35px;display: none;">
+                <a class="mui-btn-link" style="color: #808080;">点击加载更多</a>
+            </div>
         </div>
     </div>
 </div>
@@ -49,9 +51,6 @@
     mui.init();
 
     mui.plusReady(function () {
-        blog_ops.getBannerList();
-        blog_ops.setBlogList();
-
         var blog_info_id = "blog_info.html";
         var blog_info = mui.preload({
             id: blog_info_id,
@@ -74,9 +73,26 @@
             blog_ops.setSpeech();
         });
 
+        mui(".more_blog").on("tap",".mui-btn-link",function(){
+            var ul = document.querySelector('.blog_list_wrap .mui-table-view');
+            var fragment = blog_ops.getBlogList();
+            if( blog_ops.p <= 2 ){
+                ul.innerHTML = '';
+            }
+            ul.appendChild( fragment );
+            document.querySelector(".more_blog").style.display = "block";
+            if( document.querySelectorAll(".blog_list_wrap .mui-table-view img").length < 1 ){
+                return;
+            }
+            mui(".blog_list_wrap .mui-table-view img").each( function(){
+                public_ops.lazyload(this);
+            });
+        });
+
+        blog_ops.getBannerList();
+        blog_ops.setBlogList();
+
     });
-
-
 
     var blog_ops = {
         getBannerList: function () {
@@ -160,26 +176,15 @@
             } );
         },
         setBlogList:function() {
-
             mui('.mui-scroll-wrapper').scroll({
                 bounce: false,
                 indicators: true, //是否显示滚动条
                 deceleration: mui.os.ios ? 0.003 : 0.0009 //阻尼系数
             });
-
             this.p = 1;
-            var ul = document.querySelector('.blog_list_wrap .mui-table-view');
-            var fragment = this.getBlogList();
-            if( this.p <= 2 ){
-                ul.innerHTML = '';
-            }
-            ul.appendChild( fragment );
-            mui(".blog_list_wrap img").each( function(){
-                public_ops.lazyload(this);
-            });
+            mui.trigger(document.querySelector(".more_blog .mui-btn-link"), 'tap');
         },
         getBlogList:function(){
-            console.log(1);
             var that = this;
             var fragment = document.createDocumentFragment();
             if (!public_ops.networkIsAvailable()) {
@@ -187,6 +192,10 @@
                 return fragment;
             }
 
+            if( document.querySelector(".more_blog .mui-btn-link").classList.contains("loading") ){
+                return fragment;
+            }
+            document.querySelector(".more_blog .mui-btn-link").classList.add("loading");
             mui.ajax( public_ops.buildUrl("/default/blog"),{
                 type:'get',
                 data:{ p: that.p },
@@ -211,7 +220,7 @@
                         li = document.createElement('li');
                         li.setAttribute("data",info['id']);
                         li.className = 'mui-table-view-cell mui-media';
-                        tmp_image_url = public_ops.buildPicUrl(info.image_url, { 'h': 50, 'w': 50 });
+                        tmp_image_url = public_ops.buildPicUrl(info.image_url, { 'h': 100, 'w': 100 });
                         li.innerHTML = '<a class="mui-navigate-right" href="javascript:void(0);">' +
                                 '<img class="mui-media-object mui-pull-left" src="../images/blog/loading.png"  data-src="'+tmp_image_url+'" height="50" width="50"> ' +
                                 '<div class="mui-media-body">'+info.title+' <p class="mui-ellipsis">'+info.content+'</p> </div> ' +
@@ -221,6 +230,7 @@
                     }
                 }
             });
+            document.querySelector(".more_blog .mui-btn-link").classList.remove("loading");
             return fragment;
         },
         setSpeech:function(){
@@ -231,6 +241,7 @@
             var options = {};
             options.engine = 'iFly';
             plus.speech.startRecognize( options, function ( s ) {
+                console.log(s);
                 public_ops.tip( s );
             }, function ( e ) {
                 public_ops.tip( "语音识别失败："+e.message );

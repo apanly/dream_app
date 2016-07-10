@@ -56,7 +56,12 @@ var public_ops = {
         var tmp_int = Math.ceil(width/50);
         return tmp_int * 50;
     },
+    getStepInt:function( val ){
+        var tmp_int = Math.ceil(val/50);
+        return tmp_int * 50;
+    },
     lazyload: function (obj) {
+        /*延迟加载并缓存图片*/
         var debug = false; // 默认打印调试日志
         if (obj.getAttribute('data-loaded')) {
             return;
@@ -88,7 +93,6 @@ var public_ops = {
                         obj.setAttribute('src', plus.io.convertLocalFileSystemURL(local_image_url));
                         obj.setAttribute('data-loaded', true);
                         return;
-
                     }
 
                     debug && console.log('下载失败,status' + status);// 下载失败,删除本地临时文件
@@ -101,12 +105,16 @@ var public_ops = {
                             });
                         });
                     }
-
                 });
-
                 download_task.start();
             }
             download_img();
+        }
+    },
+    debugDomAttrs:function(obj){
+        var attrs = obj.attributes;
+        for(var i=attrs.length-1; i>=0; i--) {
+            console.log( attrs[i].name + "->" + attrs[i].value  );
         }
     }
 };

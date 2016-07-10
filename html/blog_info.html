@@ -2,67 +2,135 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Hello MUI</title>
+    <title>编程浪子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <!--标准mui.css-->
     <link rel="stylesheet" type="text/css" href="../css/mui.min.css">
+    <link rel="stylesheet" href="../css/app.css">
     <!--iconfont字体-->
     <link rel="stylesheet" href="../css/iconfont.css">
 </head>
 
 <body>
 <header id="header" class="mui-bar mui-bar-nav">
-    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <a class="mui-icon mui-icon-left-nav mui-pull-left"></a>
     <h1 class="mui-title"> 博文详情 -- 编程浪子的博客</h1>
-    <a class="mui-icon  iconfont  icon-fenxiang  mui-pull-right qrcode_scan"></a>
+    <a class="mui-icon  iconfont  icon-fenxiang  mui-pull-right share"></a>
 </header>
 <div class="mui-content">
     <div class="mui-card blog_content_wrap" style="margin: 10px 0 0 0 ;">
         <div class="mui-card-header mui-card-media">
-            <img src="http://dcloud.io/hellomui/images/logo.png">
+            <img src="../images/avatar.jpg" class="avatar">
             <div class="mui-media-body">
-                小M
+                编程浪子
                 <p>发表于 2016-06-30 15:30</p>
             </div>
         </div>
         <div class="mui-card-content" style="padding: 5px 10px ;">
-            ...... 
+            ......
         </div>
         <div class="mui-card-footer">
-            <a class="mui-card-link">Like</a>
-            <a class="mui-card-link">Comment</a>
-            <a class="mui-card-link">Read more</a>
+            <a class="mui-icon iconfont icon-like"></a>
+            <a class="mui-icon iconfont icon-diancai"></a>
         </div>
     </div>
 </div>
 <script src="../js/mui.min.js"></script>
 <script src="../js/md5.min.js"></script>
 <script src="../js/public.js"></script>
+<script src="../js/mui.zoom.js"></script>
+<script src="../js/mui.previewimage.js"></script>
 <script type="text/javascript">
     mui.init({
         swipeBack: true //启用右滑关闭功能
     });
-    mui.plusReady(function(){
-//        var params = plus.webview.currentWebview();
-//        console.log(params.blog_id );
-//        mui.alert(params.blog_id);
-    });
 
+    mui.plusReady(function () {
+        blog_info_ops.eventBind();
+    });
 
     window.addEventListener('getInfo',function(event){
         blog_info_ops.getBlogInfo(event.detail.id);//获得事件参数
     });
 
     var blog_info_ops = {
+        eventBind:function(){
+
+            var that = this;
+            //分享操作
+            var shares = {};
+
+            plus.share.getServices(function(s) {
+                if (s && s.length > 0) {
+                    for (var i = 0; i < s.length; i++) {
+                        var t = s[i];
+                        shares[t.id] = t;
+                    }
+                }
+            }, function() {
+                public_ops.tip("获取分享服务列表失败");
+            });
+
+            mui("#header").on("tap", ".share", function () {
+                var ids = [{
+                    id: "weixin",
+                    ex: "WXSceneSession"
+                }, {
+                    id: "weixin",
+                    ex: "WXSceneTimeline"
+                }, {
+                    id: "qq"
+                }],
+
+                bts = [{
+                    title: "发送给微信好友"
+                }, {
+                    title: "分享到微信朋友圈"
+                }, {
+                    title: "分享到QQ"
+                }];
+
+                plus.nativeUI.actionSheet({
+                    cancel: "取消",
+                    buttons: bts
+                }, function(e) {
+                    var i = e.index;
+                    if (i > 0) {
+                        var s_id = ids[i - 1].id;
+                        var share = shares[s_id];
+                        if (share) {
+                            if (share.authenticated) {
+                                that.shareMessage(share, ids[i - 1].ex);
+                            } else {
+                                share.authorize(function() {
+                                    that.shareMessage(share, ids[i - 1].ex);
+                                }, function(e) {
+                                    public_ops.tip("认证授权失败：" + e.code + " - " + e.message);
+                                });
+                            }
+                        } else {
+                            public_ops.tip("无法获取分享服务，请检查manifest.json中分享插件参数配置，并重新打包")
+                        }
+                    }
+                });
+            });
+
+            mui("#header").on("tap",".mui-pull-left",function(){
+                plus.nativeUI.closeWaiting();
+                mui.back();
+            });
+        },
         getBlogInfo:function( blog_id ){
 			var that = this;
+            plus.nativeUI.showWaiting("正在加载......",{ modal:false,loading:{ icon:"../images/waiting.png" } });
             mui.ajax(  public_ops.buildUrl("/default/info"),{
                 type:'post',
                 data:{ id:blog_id },
                 dataType:'json',
                 success:function( res ){
+                    plus.nativeUI.closeWaiting();
                     if( res.code != 200 ){
                         public_ops.tip(res.msg);
                         return;
@@ -72,30 +140,59 @@
                     document.querySelector(".blog_content_wrap .mui-card-header .mui-media-body").innerHTML = info['author']["name"]+"<p>更新于 "+info['updated_time']+"</p>";
                     document.querySelector("#header .mui-title").innerHTML = info.title;
                     document.querySelector(".blog_content_wrap .mui-card-content").innerHTML = info.content;
+                    var a=document.getElementsByTagName('a');
+                    for(var i=0;i< a.length;i++){
+                        a[i].onclick=function(ev){
+                            ev.preventDefault();
+                            plus.runtime.openURL(this.href);
+                        }
+                    }
                     that.adaptImage();
                 }
             });
         },
         adaptImage:function(){
-                mui(".blog_content_wrap .mui-card-content img").each(function(){
-                    this.setAttribute("data-src",this.getAttribute("src") );
-                    this.setAttribute("style","width:100px;height:75px;");
-                    this.setAttribute("src","../images/blog/loading.png");
+            if( document.querySelectorAll(".blog_content_wrap .mui-card-content img").length < 1 ){
+                return;
+            }
+            mui(".blog_content_wrap .mui-card-content img").each(function(){
+                this.setAttribute("data-src",this.getAttribute("src") );
+                this.setAttribute("data-preview-group","1" );
+                this.setAttribute("data-preview-src","../images/blog/loading.png" );
+                this.setAttribute("style","width:100px;height:75px;");
+                this.setAttribute("src","../images/blog/loading.png");
+            });
 
-                });
-        		mui(".blog_content_wrap .mui-card-content img").each(function(){
-        			var tmp_src = this.getAttribute("data-src");
-                    var tmp_pos_idx = tmp_src.indexOf("?");
-                    if( tmp_pos_idx > -1 ){
-                        tmp_src = tmp_src.substr(0,tmp_pos_idx);
-                    }
-                    var tmp_screen_width = public_ops.getDevicecScreenWidth();
-                    this.setAttribute("style","width:"+(tmp_screen_width-50)+"px;");
-                    this.setAttribute("data-src",public_ops.buildPicUrl( tmp_src ,{ w:tmp_screen_width } ) );
-                    public_ops.lazyload( this );
-                    //console.log(  );
-                    //this.setAttribute("src",public_ops.buildPicUrl( tmp_src ,{ w:public_ops.getDevicecScreenWidth() } ) );
-        		});
+            mui(".blog_content_wrap .mui-card-content img").each(function(){
+                var tmp_src = this.getAttribute("data-src");
+                var tmp_pos_idx = tmp_src.indexOf("?");
+                if( tmp_pos_idx > -1 ){
+                    tmp_src = tmp_src.substr(0,tmp_pos_idx);
+                }
+                var tmp_screen_width = public_ops.getDevicecScreenWidth();
+                this.setAttribute("style","width:"+(tmp_screen_width-50)+"px;");
+                this.setAttribute("data-src",public_ops.buildPicUrl( tmp_src ,{ w:tmp_screen_width*2 } ) );
+                public_ops.lazyload( this );
+            });
+
+            //mui.previewImage();//可以预览图片
+
+        },
+        shareMessage:function(share, ex) {
+            var msg = {
+                extra: {
+                    scene: ex
+                }
+            };
+            msg.href = "http://m.vincentguo.cn/";
+            msg.title = "编程浪子的博客";
+            msg.content = "这是我做的app";
+            msg.thumbs = ["_www/images/app_logo.png"];
+            share.send(msg, function() {
+                console.log("分享到\"" + share.description + "\"成功！ ");
+            }, function(e) {
+                console.log("分享到\"" + share.description + "\"失败: " + e.code + " - " + e.message);
+            });
         }
     };
 </script>

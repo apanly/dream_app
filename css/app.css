@@ -1,0 +1,21 @@
+
+.loading{
+    background:url("../images/loading_small.png") no-repeat center center;
+}
+
+.more {
+    text-align: center;
+    display: block;
+    min-width: 50px;
+}
+
+.more a{
+    min-width: 50px;
+    color: #808080;
+    height: 50px;
+    line-height: 50px;
+    padding: 15px 0;
+}
+.avatar{
+    border-radius: 34px;
+}

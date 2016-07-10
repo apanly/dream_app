@@ -104,7 +104,7 @@
 		"NativeObj": {
 			"description": "原生对象"
 		},
-		"Share": {}
+		"Share": {},"OAuth":{}
 	},
 	"plus": {
 		"splashscreen": {
@@ -115,7 +115,7 @@
 		"runmode": "normal",/*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
 		"signature": "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",/*可选，保留给应用签名，暂不使用*/
 		"distribute": {
-			"plugins": {
+			"plugins": {"oauth":{"qq":{"appid":"1105448005"}},
 				"share": {
 					"qq": {
 						"appid": "1105448005",
@@ -181,9 +181,9 @@
 			"splashscreen": {
 				"ios": {
 					"iphone": {
-						"default": "", /*iPhone3启动图片选，分辨率：320x480*/
-						"retina35": "",/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
-						"retina40": "",/*4.0 英寸设备(iPhone5/iPhone5s)启动图片，分辨率：640x1136*/
+						"default": "/Users/vincent/Desktop/app/320_480.png", /*iPhone3启动图片选，分辨率：320x480*/
+						"retina35": "/Users/vincent/Desktop/app/640_960.png",/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
+						"retina40": "/Users/vincent/Desktop/app/640_1136.png",/*4.0 英寸设备(iPhone5/iPhone5s)启动图片，分辨率：640x1136*/
 						"retina47": "",/*4.7 英寸设备(iPhone6)启动图片，分辨率：750x1334*/
 						"retina55": "",/*5.5 英寸设备(iPhone6 Plus)启动图片，分辨率：1242x2208*/
 						"retina55l": ""

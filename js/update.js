@@ -14,10 +14,9 @@
 * 无需升级
 {"status":0}
  */
-var server = "http://www.dcloud.io/check/update"; //获取升级描述文件服务器地址
 
 function update() {
-	mui.getJSON(server, {
+	mui.getJSON(public_ops.buildUrl("/default/update"), {
 		"appid": plus.runtime.appid,
 		"version": plus.runtime.version,
 		"imei": plus.device.imei
