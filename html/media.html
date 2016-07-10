@@ -8,6 +8,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <!--标准mui.css-->
     <link rel="stylesheet" type="text/css" href="../css/mui.min.css">
+    <!--iconfont字体-->
+    <link rel="stylesheet" href="../css/iconfont.css">
     <!--App自定义的css-->
     <link rel="stylesheet" type="text/css" href="../css/app.css"/>
 </head>
@@ -23,8 +25,8 @@
             <ul class="mui-table-view mui-grid-view">
                 <img class="mui-media-object mui-pull-left" src="../images/blog/loading.png" style="height: 210px;line-height:210px;width: 100%;max-width: 100%;">
             </ul>
-            <div class="more_media" style="text-align: center;height: 35px;line-height: 35px;display: none;">
-                <a class="mui-btn-link" style="color: #808080;">点击加载更多</a>
+            <div class="more_media more">
+                <a class="mui-btn-link mui-icon  iconfont" style="color: #808080;">点击加载更多</a>
             </div>
         </div>
     </div>
@@ -116,6 +118,7 @@
                 }
                 ul.appendChild( fragment );
                 document.querySelector(".more_media").style.display = "block";
+
                 if( document.querySelectorAll(".media_list_wrap .mui-table-view img").length < 1 ){
                     return;
                 }
@@ -142,16 +145,19 @@
                 return fragment;
             }
 
-            if( more_target.classList.contains("loading") ){
+            if( more_target.classList.contains("icon-spinner") ){
                 return fragment;
             }
-            more_target.classList.add("loading");
+            more_target.classList.add("icon-spinner");
+            more_target.innerHTML = "加载.....";
             mui.ajax( public_ops.buildUrl("/default/media"),{
                 type:'get',
                 data:{ p: that.p },
                 dataType:'json',
                 async:false,
                 success:function( res ){
+                    more_target.classList.remove("icon-spinner");
+                    more_target.innerHTML = "点击加载更多";
                     if( res.code != 200 ){
                         public_ops.tip(res.msg);
                         return;
@@ -178,7 +184,7 @@
                     }
                 }
             });
-            more_target.classList.remove("loading");
+
             return fragment;
         }
 

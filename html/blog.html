@@ -9,6 +9,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <!--标准mui.css-->
     <link rel="stylesheet" type="text/css" href="../css/mui.min.css">
+    <!--iconfont字体-->
+    <link rel="stylesheet" href="../css/iconfont.css">
     <!--App自定义的css-->
     <link rel="stylesheet" type="text/css" href="../css/app.css"/>
 </head>
@@ -187,21 +189,25 @@
         getBlogList:function(){
             var that = this;
             var fragment = document.createDocumentFragment();
+            var more_target = document.querySelector(".more_blog .mui-btn-link");
             if (!public_ops.networkIsAvailable()) {
                 public_ops.tip("网络不可用，请联网之后再用！！");
                 return fragment;
             }
 
-            if( document.querySelector(".more_blog .mui-btn-link").classList.contains("loading") ){
+            if( more_target.classList.contains("icon-spinner") ){
                 return fragment;
             }
-            document.querySelector(".more_blog .mui-btn-link").classList.add("loading");
+            more_target.classList.add("icon-spinner");
+            more_target.innerHTML = "加载.....";
             mui.ajax( public_ops.buildUrl("/default/blog"),{
                 type:'get',
                 data:{ p: that.p },
                 dataType:'json',
                 async:false,
                 success:function( res ){
+                    more_target.classList.remove("icon-spinner");
+
                     if( res.code != 200 ){
                         public_ops.tip(res.msg);
                         return;
@@ -230,7 +236,7 @@
                     }
                 }
             });
-            document.querySelector(".more_blog .mui-btn-link").classList.remove("loading");
+            more_target.innerHTML = "点击加载更多";
             return fragment;
         },
         setSpeech:function(){

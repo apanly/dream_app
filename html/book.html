@@ -27,7 +27,7 @@
                 <img class="mui-media-object mui-pull-left" src="../images/blog/loading.png" style="height: 210px;line-height:210px;width: 100%;max-width: 100%;">
             </ul>
             <div class="more_media more">
-                <a class="mui-btn-link loading">点击加载更多</a>
+                <a class="mui-btn-link  mui-icon  iconfont" style="color: #808080;">点击加载更多</a>
             </div>
         </div>
     </div>
@@ -96,16 +96,19 @@
                 return fragment;
             }
 
-            if( more_target.classList.contains("loading") ){
+            if( more_target.classList.contains("icon-spinner") ){
                 return fragment;
             }
-            more_target.classList.add("loading");
+            more_target.classList.add("icon-spinner");
+            more_target.innerHTML = "加载.....";
             mui.ajax( public_ops.buildUrl("/default/book"),{
                 type:'get',
                 data:{ p: that.p },
                 dataType:'json',
                 async:false,
                 success:function( res ){
+                    more_target.classList.remove("icon-spinner");
+                    more_target.innerHTML = "点击加载更多";
                     if( res.code != 200 ){
                         public_ops.tip(res.msg);
                         return;
@@ -130,7 +133,7 @@
                     }
                 }
             });
-            more_target.classList.remove("loading");
+
             return fragment;
         }
 
