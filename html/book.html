@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <title>编程浪子的博客</title>
@@ -21,124 +20,38 @@
     <a class="mui-icon  iconfont  icon-saoma  mui-pull-right qrcode_scan"></a>
 </header>
 <div class="mui-content">
-    <div id="pullrefresh" class="media_list_wrap mui-scroll-wrapper" style="top: 44px;">
-        <div class="mui-scroll">
-            <ul class="mui-table-view mui-grid-view">
-                <img class="mui-media-object mui-pull-left" src="../images/blog/loading.png" style="height: 210px;line-height:210px;width: 100%;max-width: 100%;">
-            </ul>
-            <div class="more_media more">
-                <a class="mui-btn-link  mui-icon  iconfont" style="color: #808080;">点击加载更多</a>
-            </div>
-        </div>
-    </div>
 </div>
 <script src="../js/mui.min.js"></script>
-<script src="../js/md5.min.js"></script>
-<script src="../js/public.js"></script>
 <script type="text/javascript">
-    mui.init();
-    mui.plusReady(function () {
-
-        media_ops.eventBind();
+    mui.init({
+        subpages:[{
+            url:'book_list.html',
+            id:'book_list.html',
+            styles:{
+                top:'45px',//mui标题栏默认高度为45px；
+                bottom:'0px'//默认为0px，可不定义；
+            }
+        }]
     });
+    mui.plusReady(function () {
+        mui("#header").on("tap", ".qrcode_scan", function () {
+            var ws = {};
+            var id = "barcode_scan.html";
+            ws.scrollIndicator||(ws.scrollIndicator='none');
+            ws.scalable||(ws.scalable=false);
+            var pre='';
+            openw = plus.webview.create(pre+id,id,ws);
+            openw.addEventListener('loaded',function(){//页面加载完成后才显示
+                //		setTimeout(function(){//延后显示可避免低端机上动画时白屏
+                openw.show('pop-in');
+                //		},200);
+            },false);
 
-    var media_ops = {
-        eventBind:function(){
-            var that = this;
-            mui(".more_media").on("tap",".mui-btn-link",function(){
-                var ul = document.querySelector('.media_list_wrap .mui-table-view');
-                var fragment = that.getMediaList();
-                if( that.p <= 2 ){
-                    ul.innerHTML = '';
-                }
-                ul.appendChild( fragment );
-                document.querySelector(".more_media").style.display = "block";
-                if( document.querySelectorAll(".media_list_wrap .mui-table-view img").length < 1 ){
-                    return;
-                }
-                mui(".media_list_wrap .mui-table-view img").each( function(){
-                    public_ops.lazyload(this);
-                });
-            });
-
-            mui('.mui-scroll-wrapper').scroll({
-                bounce: false,
-                indicators: true, //是否显示滚动条
-                deceleration: mui.os.ios ? 0.003 : 0.0009 //阻尼系数
-            });
-            this.p = 1;
-            mui.trigger( document.querySelector(".more_media .mui-btn-link"), 'tap');
-
-            mui("#header").on("tap", ".qrcode_scan", function () {
-                var ws = {};
-                var id = "barcode_scan.html";
-                ws.scrollIndicator||(ws.scrollIndicator='none');
-                ws.scalable||(ws.scalable=false);
-                var pre='';
-                openw = plus.webview.create(pre+id,id,ws);
-                openw.addEventListener('loaded',function(){//页面加载完成后才显示
-    //		setTimeout(function(){//延后显示可避免低端机上动画时白屏
-                    openw.show('pop-in');
-    //		},200);
-                },false);
-
-                openw.addEventListener('close',function(){//页面关闭后可再次打开
-                    openw=null;
-                },false);
-            });
-        },
-        getMediaList:function(){
-            var that = this;
-            var fragment = document.createDocumentFragment();
-            var more_target = document.querySelector(".more_media .mui-btn-link");
-            if (!public_ops.networkIsAvailable()) {
-                public_ops.tip("网络不可用，请联网之后再用！！");
-                return fragment;
-            }
-
-            if( more_target.classList.contains("icon-spinner") ){
-                return fragment;
-            }
-            more_target.classList.add("icon-spinner");
-            more_target.innerHTML = "加载.....";
-            mui.ajax( public_ops.buildUrl("/default/book"),{
-                type:'get',
-                data:{ p: that.p },
-                dataType:'json',
-                async:false,
-                success:function( res ){
-                    more_target.classList.remove("icon-spinner");
-                    more_target.innerHTML = "点击加载更多";
-                    if( res.code != 200 ){
-                        public_ops.tip(res.msg);
-                        return;
-                    }
-                    that.p++;//翻页加加
-                    if (res.data.list.length < 1) {
-                        return;
-                    }
-                    var screen_width = public_ops.getDevicecScreenWidth();
-                    var li,info;
-                    var list = res.data.list;
-                    for (var idx in list ) {
-                        info = list[ idx ];
-                        li = document.createElement('li');
-                        li.className = 'mui-table-view-cell mui-media mui-col-xs-12';
-                        tmp_image_url = public_ops.buildPicUrl(info.image_url, { 'w': screen_width });
-                        li.innerHTML = '<a href="javascript:void(0);">' +
-                                '<img class="mui-media-object" src="../images/blog/loading.png"  data-src="'+tmp_image_url+'"> ' +
-                                '<div class="mui-media-body">'+info.title+'</div>' +
-                                '</a>';
-                        fragment.appendChild(li);
-                    }
-                }
-            });
-
-            return fragment;
-        }
-
-    }
-
+            openw.addEventListener('close',function(){//页面关闭后可再次打开
+                openw=null;
+            },false);
+        });
+    });
 </script>
 </body>
 </html>

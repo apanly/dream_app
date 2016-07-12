@@ -210,88 +210,165 @@
 		}
 	},
 	"dependencies": {
-		"pages": {
-			"html/blog.html": {
-				"href": "html/blog.html",
-				"resources": [
-					"css/mui.min.css",
-					"fonts/mui.ttf",
-					"css/app.css",
-					"js/mui.min.js",
-					"images/cbd.jpg",
-					"images/yuantiao.jpg",
-					"images/shuijiao.jpg",
-					"images/muwu.jpg"
-				],
-				"priority": 0
-			},
-			"html/book.html": {
-				"href": "html/book.html",
-				"resources": [
-					"css/mui.min.css",
-					"fonts/mui.ttf",
-					"css/app.css",
-					"js/mui.min.js",
-					"images/shuijiao.jpg",
-					"images/muwu.jpg",
-					"images/cbd.jpg",
-					"images/yuantiao.jpg"
-				],
-				"priority": 1
-			},
-			"html/media.html": {
-				"href": "html/media.html",
-				"resources": [
-					"css/mui.min.css",
-					"fonts/mui.ttf",
-					"css/app.css",
-					"js/mui.min.js",
-					"images/shuijiao.jpg",
-					"images/muwu.jpg",
-					"images/cbd.jpg",
-					"images/yuantiao.jpg"
-				],
-				"priority": 2
-			},
-			"html/about.html": {
-				"href": "html/about.html",
-				"resources": [
-					"css/mui.min.css",
-					"fonts/mui.ttf",
-					"css/app.css",
-					"css/feedback.css",
-					"images/iconfont-tianjia.png",
-					"js/mui.min.js",
-					"js/mui.view.js",
-					"js/feedback.js",
-					"images/logo.png"
-				],
-				"priority": 3
-			},
-			"index.html": {
-				"href": "index.html",
-				"resources": [
-					"css/mui.min.css",
-					"fonts/mui.ttf",
-					"js/mui.min.js"
-				],
-				"refer": [
-					"html/blog.html",
-					"html/book.html",
-					"html/media.html",
-					"html/about.html"
-				],
-				"priority": 0
-			}
-		},
-		"idle": {
-			"resources": [
-				"images/qrcode.png",
-				"images/60x60.gif",
-				"js/update.js",
-				"images/login-1.png"
-			]
-		}
+	  "pages": {
+	    "html/blog.html": {
+	      "href": "html/blog.html",
+	      "resources": [
+	        "css/mui.min.css",
+	        "fonts/mui.ttf",
+	        "css/app.css",
+	        "js/mui.min.js",
+	        "images/cbd.jpg",
+	        "images/yuantiao.jpg",
+	        "images/shuijiao.jpg",
+	        "images/muwu.jpg",
+	        "css/iconfont.css",
+	        "fonts/iconfont.ttf",
+	        "images/loading_small.png",
+	        "js/md5.min.js",
+	        "js/public.js",
+	        "images/blog/loading.png"
+	      ],
+	      "priority": 0,
+	      "refer": [
+	        "html/blog_info.html"
+	      ]
+	    },
+	    "html/book.html": {
+	      "href": "html/book.html",
+	      "resources": [
+	        "css/mui.min.css",
+	        "fonts/mui.ttf",
+	        "css/app.css",
+	        "js/mui.min.js",
+	        "images/shuijiao.jpg",
+	        "images/muwu.jpg",
+	        "images/cbd.jpg",
+	        "images/yuantiao.jpg",
+	        "css/iconfont.css",
+	        "fonts/iconfont.ttf",
+	        "images/loading_small.png",
+	        "js/md5.min.js",
+	        "js/public.js",
+	        "images/blog/loading.png"
+	      ],
+	      "priority": 1,
+	      "refer": [
+	        "html/barcode_scan.html"
+	      ]
+	    },
+	    "html/media.html": {
+	      "href": "html/media.html",
+	      "resources": [
+	        "css/mui.min.css",
+	        "fonts/mui.ttf",
+	        "css/app.css",
+	        "js/mui.min.js",
+	        "images/shuijiao.jpg",
+	        "images/muwu.jpg",
+	        "images/cbd.jpg",
+	        "images/yuantiao.jpg",
+	        "css/iconfont.css",
+	        "fonts/iconfont.ttf",
+	        "images/loading_small.png",
+	        "js/md5.min.js",
+	        "js/public.js",
+	        "js/mui.zoom.js",
+	        "js/mui.previewimage.js",
+	        "images/blog/loading.png"
+	      ],
+	      "priority": 2,
+	      "refer": []
+	    },
+	    "html/about.html": {
+	      "href": "html/about.html",
+	      "resources": [
+	        "css/mui.min.css",
+	        "fonts/mui.ttf",
+	        "css/app.css",
+	        "css/feedback.css",
+	        "images/iconfont-tianjia.png",
+	        "js/mui.min.js",
+	        "js/mui.view.js",
+	        "js/feedback.js",
+	        "images/logo.png",
+	        "images/loading_small.png",
+	        "images/avatar.jpg"
+	      ],
+	      "priority": 3,
+	      "refer": []
+	    },
+	    "index.html": {
+	      "href": "index.html",
+	      "resources": [
+	        "css/mui.min.css",
+	        "fonts/mui.ttf",
+	        "js/mui.min.js",
+	        "css/iconfont.css",
+	        "fonts/iconfont.ttf",
+	        "js/public.js",
+	        "js/update.js"
+	      ],
+	      "refer": [
+	        "html/blog.html",
+	        "html/book.html",
+	        "html/media.html",
+	        "html/about.html"
+	      ],
+	      "priority": 0
+	    },
+	    "html/blog_info.html": {
+	      "href": "html/blog_info.html",
+	      "resources": [
+	        "css/mui.min.css",
+	        "fonts/mui.ttf",
+	        "css/iconfont.css",
+	        "fonts/iconfont.ttf",
+	        "css/app.css",
+	        "images/loading_small.png",
+	        "js/mui.min.js",
+	        "js/md5.min.js",
+	        "js/public.js",
+	        "js/mui.zoom.js",
+	        "js/mui.previewimage.js",
+	        "images/waiting.png",
+	        "images/blog/loading.png",
+	        "images/avatar.jpg"
+	      ],
+	      "priority": 0
+	    },
+	    "html/barcode_scan.html": {
+	      "href": "html/barcode_scan.html",
+	      "resources": [
+	        "js/common.js"
+	      ],
+	      "priority": 1
+	    }
+	  },
+	  "idle": {
+	    "resources": [
+	      "images/blog/blog_default.jpg",
+	      "js/mui.pullToRefresh.js",
+	      "preview/4.jpg",
+	      "images/app_logo.png",
+	      "js/mui.pullToRefresh.material.js",
+	      "images/loading_small.gif",
+	      "html/external_site.html",
+	      "js/mui.lazyload.js",
+	      "js/mui.lazyload.img.js",
+	      "html/blog_search.html",
+	      "preview/2.jpg",
+	      "preview/1.jpg",
+	      "preview/3.jpg",
+	      "readme.md"
+	    ]
+	  }
 	},
-	"unpackage":[],"fullscreen":false
+	"unpackage":[
+	  "preview/1.jpg",
+	  "preview/2.jpg",
+	  "preview/3.jpg",
+	  "preview/4.jpg",
+	  "readme.md"
+	],"fullscreen":false
 }

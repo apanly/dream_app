@@ -1,1 +1,92 @@
-null
+{
+  "html/blog_info.html": {
+    "href": "html/blog_info.html",
+    "resources": [
+      "css/mui.min.css",
+      "fonts/mui.ttf",
+      "css/iconfont.css",
+      "fonts/iconfont.ttf",
+      "css/app.css",
+      "images/loading_small.png",
+      "js/mui.min.js",
+      "js/md5.min.js",
+      "js/public.js",
+      "js/mui.zoom.js",
+      "js/mui.previewimage.js",
+      "images/waiting.png",
+      "images/blog/loading.png",
+      "images/avatar.jpg"
+    ],
+    "priority": 0
+  },
+  "html/blog.html": {
+    "href": "html/blog.html",
+    "resources": [
+      "css/iconfont.css",
+      "fonts/iconfont.ttf",
+      "images/loading_small.png",
+      "js/md5.min.js",
+      "js/public.js",
+      "images/blog/loading.png"
+    ],
+    "refer": [
+      "html/blog_info.html"
+    ],
+    "priority": 0
+  },
+  "html/barcode_scan.html": {
+    "href": "html/barcode_scan.html",
+    "resources": [
+      "js/common.js"
+    ],
+    "priority": 1
+  },
+  "html/book.html": {
+    "href": "html/book.html",
+    "resources": [
+      "css/iconfont.css",
+      "fonts/iconfont.ttf",
+      "images/loading_small.png",
+      "js/md5.min.js",
+      "js/public.js",
+      "images/blog/loading.png"
+    ],
+    "refer": [
+      "html/barcode_scan.html"
+    ],
+    "priority": 1
+  },
+  "html/media.html": {
+    "href": "html/media.html",
+    "resources": [
+      "css/iconfont.css",
+      "fonts/iconfont.ttf",
+      "images/loading_small.png",
+      "js/md5.min.js",
+      "js/public.js",
+      "js/mui.zoom.js",
+      "js/mui.previewimage.js",
+      "images/blog/loading.png"
+    ],
+    "priority": 2
+  },
+  "html/about.html": {
+    "href": "html/about.html",
+    "resources": [
+      "images/loading_small.png",
+      "images/avatar.jpg"
+    ],
+    "priority": 3
+  },
+  "index.html": {
+    "href": "index.html",
+    "resources": [
+      "css/iconfont.css",
+      "fonts/iconfont.ttf",
+      "js/public.js",
+      "js/update.js"
+    ],
+    "refer": [],
+    "priority": 0
+  }
+}

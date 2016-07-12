@@ -32,17 +32,6 @@
         </div>
         <div class="mui-slider-indicator mui-text-right"></div>
     </div>
-    <!--下拉刷新容器，不要下拉-->
-    <div id="pullrefresh" class="blog_list_wrap mui-scroll-wrapper" style="top:254px;">
-        <div class="mui-scroll">
-            <ul class="mui-table-view mui-table-view-chevron">
-                <img class="mui-media-object mui-pull-left" src="../images/blog/loading.png" style="height: 210px;line-height:210px;width: 100%;max-width: 100%;">
-            </ul>
-            <div class="more_blog" style="text-align: center;height: 35px;line-height: 35px;display: none;">
-                <a class="mui-btn-link" style="color: #808080;">点击加载更多</a>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script src="../js/mui.min.js"></script>
@@ -50,50 +39,19 @@
 <script src="../js/public.js"></script>
 <script type="text/javascript">
     //初始化预加载详情页面
-    mui.init();
+    mui.init({
+        subpages:[{
+            url:'blog_list.html',
+            id:'blog_list.html',
+            styles:{
+                top:'254px',//mui标题栏默认高度为45px；
+                bottom:'0px'//默认为0px，可不定义；
+            }
+        }]
+    });
 
     mui.plusReady(function () {
-        var blog_info_id = "blog_info.html";
-        var blog_info = mui.preload({
-            id: blog_info_id,
-            url: blog_info_id
-        });
-
-        mui(".mui-table-view").on('tap', '.mui-table-view-cell', function () {
-            //传值给详情页面，通知加载新数据需要预加载
-            if (!blog_info) {
-                blog_info = plus.webview.getWebviewById(blog_info_id);
-            }
-
-            mui.fire(blog_info, 'getInfo', {id: this.getAttribute("data") });
-            mui.openWindow({
-                id: blog_info_id
-            });
-        });
-
-        mui("#header").on("tap", ".speech", function () {
-            blog_ops.setSpeech();
-        });
-
-        mui(".more_blog").on("tap",".mui-btn-link",function(){
-            var ul = document.querySelector('.blog_list_wrap .mui-table-view');
-            var fragment = blog_ops.getBlogList();
-            if( blog_ops.p <= 2 ){
-                ul.innerHTML = '';
-            }
-            ul.appendChild( fragment );
-            document.querySelector(".more_blog").style.display = "block";
-            if( document.querySelectorAll(".blog_list_wrap .mui-table-view img").length < 1 ){
-                return;
-            }
-            mui(".blog_list_wrap .mui-table-view img").each( function(){
-                public_ops.lazyload(this);
-            });
-        });
-
         blog_ops.getBannerList();
-        blog_ops.setBlogList();
-
     });
 
     var blog_ops = {
@@ -176,68 +134,6 @@
                     });
                 }
             } );
-        },
-        setBlogList:function() {
-            mui('.mui-scroll-wrapper').scroll({
-                bounce: false,
-                indicators: true, //是否显示滚动条
-                deceleration: mui.os.ios ? 0.003 : 0.0009 //阻尼系数
-            });
-            this.p = 1;
-            mui.trigger(document.querySelector(".more_blog .mui-btn-link"), 'tap');
-        },
-        getBlogList:function(){
-            var that = this;
-            var fragment = document.createDocumentFragment();
-            var more_target = document.querySelector(".more_blog .mui-btn-link");
-            if (!public_ops.networkIsAvailable()) {
-                public_ops.tip("网络不可用，请联网之后再用！！");
-                return fragment;
-            }
-
-            if( more_target.classList.contains("icon-spinner") ){
-                return fragment;
-            }
-            more_target.classList.add("icon-spinner");
-            more_target.innerHTML = "加载.....";
-            mui.ajax( public_ops.buildUrl("/default/blog"),{
-                type:'get',
-                data:{ p: that.p },
-                dataType:'json',
-                async:false,
-                success:function( res ){
-                    more_target.classList.remove("icon-spinner");
-
-                    if( res.code != 200 ){
-                        public_ops.tip(res.msg);
-                        return;
-                    }
-
-                    that.p++;//翻页加加
-
-                    if (res.data.list.length < 1) {
-                        return;
-                    }
-
-                    var li,info;
-                    var list = res.data.list;
-                    for (var idx in list ) {
-                        info = list[ idx ];
-                        li = document.createElement('li');
-                        li.setAttribute("data",info['id']);
-                        li.className = 'mui-table-view-cell mui-media';
-                        tmp_image_url = public_ops.buildPicUrl(info.image_url, { 'h': 100, 'w': 100 });
-                        li.innerHTML = '<a class="mui-navigate-right" href="javascript:void(0);">' +
-                                '<img class="mui-media-object mui-pull-left" src="../images/blog/loading.png"  data-src="'+tmp_image_url+'" height="50" width="50"> ' +
-                                '<div class="mui-media-body">'+info.title+' <p class="mui-ellipsis">'+info.content+'</p> </div> ' +
-                                '</a>';
-
-                        fragment.appendChild(li);
-                    }
-                }
-            });
-            more_target.innerHTML = "点击加载更多";
-            return fragment;
         },
         setSpeech:function(){
             if( plus.os.name=='Android' && navigator.userAgent.indexOf('StreamApp')>0 ){

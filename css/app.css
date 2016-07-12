@@ -93,12 +93,12 @@
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
 }
-.mui-slider .mui-slider-group .mui-slider-item img {
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 100%;
-}
+/*.mui-slider .mui-slider-group .mui-slider-item img {*/
+    /*width: auto;*/
+    /*height: auto;*/
+    /*max-width: 100%;*/
+    /*max-height: 100%;*/
+/*}*/
 .mui-android-4-1 .mui-slider .mui-slider-group .mui-slider-item img {
     width: 100%;
 }
@@ -109,6 +109,11 @@
     display: table-cell;
     vertical-align: middle;
 }
+
+/*.mui-content img {*/
+    /*max-width: 100%;*/
+    /*height: auto;*/
+/*}*/
 .mui-preview-loading {
     position: absolute;
     width: 100%;
@@ -129,10 +134,13 @@
     height: 50px;
     width: 50px;
 }
+
 .mui-preview-image img.mui-transitioning {
     -webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
     transition: transform 0.5s ease, opacity 0.5s ease;
 }
+
+
 @-webkit-keyframes fadeIn {
     0% {
         opacity: 0;
@@ -165,7 +173,4 @@
         opacity: 0;
     }
 }
-.mui-content img {
-    max-width: 100%;
-    height: auto;
-}
+
