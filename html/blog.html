@@ -143,7 +143,6 @@
             var options = {};
             options.engine = 'iFly';
             plus.speech.startRecognize( options, function ( s ) {
-                console.log(s);
                 public_ops.tip( s );
             }, function ( e ) {
                 public_ops.tip( "语音识别失败："+e.message );
