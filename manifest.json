@@ -369,6 +369,10 @@
 	  "preview/2.jpg",
 	  "preview/3.jpg",
 	  "preview/4.jpg",
-	  "readme.md"
+	  "readme.md",
+	  "js/mui.lazyload.img.js",
+	  "js/mui.lazyload.js",
+	  "js/mui.pullToRefresh.js",
+	  "js/mui.pullToRefresh.material.js"
 	],"fullscreen":false
 }

@@ -6,40 +6,89 @@
     <meta name="HandheldFriendly" content="true"/>
     <meta name="MobileOptimized" content="320"/>
     <title>Hello H5+</title>
-    <script type="text/javascript" src="../js/common.js"></script>
-    <script type="text/javascript">
-        var ws = null, wo = null;
-        var scan = null, domready = false;
-        // H5 plus事件处理
-        function plusReady() {
-            if (ws || !window.plus || !domready) {
-                return;
-            }
+    <!--标准mui.css-->
+    <link rel="stylesheet" type="text/css" href="../css/mui.min.css">
+    <!--iconfont字体-->
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style type="text/css">
+        #bcid {
+            width: 100%;
+            position: absolute;
+            top: 45px;
+            bottom: 150px;
+            text-align: center;
+            background-color: #000000;
+        }
+        div.result {
+            width: 100%;
+            height: 150px;
+            position: absolute;
+            bottom: 0px;
+            line-height: 20px;
+            text-align: left;
+            color: #000;
+            background-color: #FFF;
+        }
+    </style>
+</head>
+<body>
+<header id="header" class="mui-bar mui-bar-nav">
+    <a class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title"> 二维码/条形码 </h1>
+    <a class="mui-icon  iconfont  icon-kaideng  mui-pull-right share"></a>
+</header>
+<div class="mui-content">
+    <div id="bcid">
+        <div style="height:40%"></div>
+        <p class="tip">...载入中...</p>
+    </div>
+    <div class="result">
+        <ul class="mui-table-view" style="margin-top: 0;">
+
+        </ul>
+    </div>
+</div>
+
+
+<script src="../js/mui.min.js"></script>
+<script src="../js/public.js"></script>
+<script type="text/javascript">
+    var ws = null, scan = null;
+    mui.plusReady(function () {
+        scan_ops.eventBind();
+    });
+
+    var scan_ops = {
+        eventBind:function () {
+            var that = this;
             // 获取窗口对象
             ws = plus.webview.currentWebview();
-            wo = ws.opener();
             // 开始扫描
             ws.addEventListener('show', function () {
-                scan = new plus.barcode.Barcode('bcid');
-                scan.onmarked = onmarked;
-                scan.start({conserve: true, filename: "_doc/barcode/"});
+                scan = new plus.barcode.Barcode('bcid',[plus.barcode.QR,plus.barcode.EAN8,plus.barcode.EAN13],{frameColor:'#00FF00',scanbarColor:'#00FF00'});
+                scan.onmarked = that.onmarked;
+                scan.start();
             });
             // 显示页面并关闭等待框
             ws.show("pop-in");
-            wo.evalJS("closeWaiting()");
-        }
-        if (window.plus) {
-            plusReady();
-        } else {
-            document.addEventListener("plusready", plusReady, false);
-        }
-        // 监听DOMContentLoaded事件
-        document.addEventListener("DOMContentLoaded", function () {
-            domready = true;
-            plusReady();
-        }, false);
-        // 二维码扫描成功
-        function onmarked(type, result, file) {
+
+            mui("#header").on("tap",".mui-pull-left",function(){
+                scan.close();
+                mui.back();
+            });
+
+            mui("#header").on("tap",".icon-kaideng",function(){
+                if( this.classList.contains("opened") ){
+                    scan.setFlash(false);
+                    this.classList.remove("opened");
+                }else{
+                    scan.setFlash(true);
+                    this.classList.add("opened");
+                }
+
+            });
+        },
+        onmarked:function(type, result, file){
             switch (type) {
                 case plus.barcode.QR:
                     type = "QR";
@@ -55,67 +104,30 @@
                     break;
             }
             result = result.replace(/\n/g, '');
-            wo.evalJS("scaned('" + type + "','" + result + "','" + file + "');");
-            back();
-        }
-        // 从相册中选择二维码图片
-        function scanPicture() {
-            plus.gallery.pick(function (path) {
-                plus.barcode.scan(path, onmarked, function (error) {
-                    plus.nativeUI.alert("无法识别此图片");
-                });
-            }, function (err) {
-                plus.nativeUI.alert("Failed: " + err.message);
+            var target = document.querySelector('.result');
+            var str = '类型：'+type+"<br/>码：" +result;
+            var fragment = document.createDocumentFragment();
+            mui.ajax(public_ops.buildUrl("/library/scan"), {
+                type: 'post',
+                data: {type: type, isbn: result},
+                dataType: 'json',
+                success: function (res) {
+                    if( res.code == 200 ){
+                        str +=  "<br/>书名：" + res.data.name;
+                    }else{
+                        str +=  "<br/>异常错误：" + res.msg;
+                    }
+
+                    li = document.createElement('li');
+                    li.className = 'mui-table-view-cell';
+                    li.innerHTML = str;
+                    fragment.appendChild(li);
+                    target.appendChild(fragment);
+                    scan.start();
+                }
             });
         }
-    </script>
-    <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8"/>
-    <style type="text/css">
-        #bcid {
-            width: 100%;
-            position: absolute;
-            top: 0px;
-            bottom: 44px;
-            text-align: center;
-        }
-
-        .tip {
-            color: #FFFFFF;
-            font-weight: bold;
-            text-shadow: 0px -1px #103E5C;
-        }
-
-        footer {
-            width: 100%;
-            height: 44px;
-            position: absolute;
-            bottom: 0px;
-            line-height: 44px;
-            text-align: center;
-            color: #FFF;
-        }
-
-        .fbt {
-            width: 50%;
-            height: 100%;
-            background-color: #FFCC33;
-            float: left;
-        }
-
-        .fbt:active {
-            -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
-            box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
-        }
-    </style>
-</head>
-<body style="background-color: #000000;">
-<div id="bcid">
-    <div style="height:40%"></div>
-    <p class="tip">...载入中...</p>
-</div>
-<footer>
-    <div class="fbt" onclick="back();">取　 消</div>
-    <div class="fbt" onclick="scanPicture();">从相册选择二维码</div>
-</footer>
+    };
+</script>
 </body>
 </html>

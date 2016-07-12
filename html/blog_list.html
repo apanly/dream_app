@@ -74,11 +74,6 @@
 
     var blog_ops = {
         setBlogList:function() {
-            mui('.mui-scroll-wrapper').scroll({
-                bounce: false,
-                indicators: true, //是否显示滚动条
-                deceleration: mui.os.ios ? 0.003 : 0.0009 //阻尼系数
-            });
             this.p = 1;
             mui.trigger(document.querySelector(".more_blog .mui-btn-link"), 'tap');
         },
