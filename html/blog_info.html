@@ -57,11 +57,9 @@
 
     var blog_info_ops = {
         eventBind:function(){
-
             var that = this;
             //分享操作
             var shares = {};
-
             plus.share.getServices(function(s) {
                 if (s && s.length > 0) {
                     for (var i = 0; i < s.length; i++) {
@@ -140,7 +138,6 @@
                     document.querySelector(".blog_content_wrap .mui-card-header .mui-media-body").innerHTML = info['author']["name"]+"<p>更新于 "+info['updated_time']+"</p>";
                     document.querySelector("#header .mui-title").innerHTML = info.title;
                     document.querySelector(".blog_content_wrap .mui-card-content").innerHTML = info.content;
-
                     that.setShareInfo( res.data.share_info );//分享设置
                     that.setExternalUrl();
                     that.adaptImage();
@@ -153,8 +150,8 @@
             }
             mui(".blog_content_wrap .mui-card-content img").each(function(){
                 this.setAttribute("data-src",this.getAttribute("src") );
-                this.setAttribute("data-preview-group","1" );
-                this.setAttribute("data-preview-src","../images/blog/loading.png" );
+                this.setAttribute("data-preview-group","blog_image" );
+                this.setAttribute("data-preview-src",this.getAttribute("src") );
                 this.setAttribute("style","width:100px;height:75px;");
                 this.setAttribute("src","../images/blog/loading.png");
             });
@@ -169,10 +166,9 @@
                 this.setAttribute("style","width:"+(tmp_screen_width-50)+"px;");
                 this.setAttribute("data-src",public_ops.buildPicUrl( tmp_src ,{ w:tmp_screen_width*2 } ) );
                 public_ops.lazyload( this );
+
             });
-
-            //mui.previewImage();//可以预览图片
-
+            mui.previewImage();//可以预览图片
         },
         setExternalUrl:function(){
             mui(".blog_content_wrap .mui-card-content").on("tap","a",function(ev){

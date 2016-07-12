@@ -34,6 +34,8 @@
 <script src="../js/mui.min.js"></script>
 <script src="../js/md5.min.js"></script>
 <script src="../js/public.js"></script>
+<script src="../js/mui.zoom.js"></script>
+<script src="../js/mui.previewimage.js"></script>
 <script type="text/javascript">
     mui.init();
     mui.plusReady(function () {
@@ -122,9 +124,13 @@
                 if( document.querySelectorAll(".media_list_wrap .mui-table-view img").length < 1 ){
                     return;
                 }
+
                 mui(".media_list_wrap .mui-table-view img").each( function(){
+                    this.setAttribute("data-preview-group","media_image" );
+                    this.setAttribute("data-preview-src",this.getAttribute("data-src") );
                     public_ops.lazyload(this);
                 });
+                mui.previewImage();//可以预览图片
             });
 
             mui('.mui-scroll-wrapper').scroll({
@@ -187,7 +193,6 @@
 
             return fragment;
         }
-
     }
 
 </script>
