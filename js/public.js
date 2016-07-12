@@ -116,7 +116,51 @@ var public_ops = {
         for(var i=attrs.length-1; i>=0; i--) {
             console.log( attrs[i].name + "->" + attrs[i].value  );
         }
+    },
+    /**
+     * 打开新窗口
+     * @param {URIString} id : 要打开页面url
+     * @param {boolean} wa : 是否显示等待框
+     * @param {boolean} ns : 是否不自动显示
+     * @param {JSON} ws : Webview窗口属性
+     */
+    clicked:function(id,wa,ns,ws){
+        if(openw){//避免多次打开同一个页面
+            return null;
+        }
+        var extranal_html = "../html/external_site.html";
+        ws=ws||{};
+        ws.scrollIndicator||(ws.scrollIndicator='none');
+        ws.scalable||(ws.scalable=false);
+        openw = plus.webview.create( extranal_html,extranal_html,ws,{ url:id });
+        ns||openw.addEventListener('loaded',function(){//页面加载完成后才显示
+//		setTimeout(function(){//延后显示可避免低端机上动画时白屏
+            openw.show(as);
+//		},200);
+        },false);
+        openw.addEventListener('close',function(){//页面关闭后可再次打开
+            openw=null;
+        },false);
+        return openw;
+    },
+    back:function( hide ){
+        if(window.plus){
+            ws ||(ws=plus.webview.currentWebview());
+            if(hide||ws.preate){
+                ws.hide('auto');
+            }else{
+                ws.close('auto');
+            }
+        }else if(history.length>1){
+            history.back();
+        }else{
+            windowclose();
+        }
     }
+
 };
 
 //window.$ = window.mui;
+// 处理点击事件
+var openw=null,waiting=null;
+var ws=null,as='pop-in';

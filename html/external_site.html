@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>编程浪子的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!--标准mui.css-->
+    <link rel="stylesheet" type="text/css" href="../css/mui.min.css">
+    <!--iconfont字体-->
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <link rel="stylesheet" href="../css/app.css">
+</head>
+<body>
+<header id="header" class="mui-bar mui-bar-nav external_title">
+    <a class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">编程浪子的博客</h1>
+</header>
+
+<script src="../js/mui.min.js"></script>
+<script src="../js/public.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var ws = null, embed = null;
+    mui.init({
+        swipeBack: true //启用右滑关闭功能
+    });
+
+    mui.plusReady(function () {
+        ws = plus.webview.currentWebview();
+        ws.addEventListener('show', function () {
+            var topoffset = '45px';
+            if (plus.navigator.isImmersedStatusbar()) {// 兼容immersed状态栏模式
+                topoffset = (Math.round(plus.navigator.getStatusbarHeight()) + 45) + 'px';
+            }
+            plus.nativeUI.showWaiting('', {style: 'black', modal: false, background: 'rgba(0,0,0,0)'});
+            embed = plus.webview.create(ws.url, 'embed', {
+                top: topoffset,
+                bottom: '0px',
+                position: 'dock',
+                dock: 'bottom',
+                bounce: 'vertical'
+            });
+            ws.append(embed);
+            embed.addEventListener('loaded', function () {
+                plus.nativeUI.closeWaiting();
+            }, false);
+            embed.addEventListener('loading', function () {
+                plus.nativeUI.showWaiting('', {style: 'black', modal: false, background: 'rgba(0,0,0,0)'});
+            }, false);
+            //embed.loadURL(newurl);
+        }, false);
+        mui("header").on("tap", ".mui-icon-left-nav", function () {
+            public_ops.back();
+            plus.nativeUI.closeWaiting();
+        });
+    });
+</script>
+</body>
+</html>

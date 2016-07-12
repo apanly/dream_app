@@ -8,9 +8,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <!--标准mui.css-->
     <link rel="stylesheet" type="text/css" href="../css/mui.min.css">
-    <link rel="stylesheet" href="../css/app.css">
     <!--iconfont字体-->
     <link rel="stylesheet" href="../css/iconfont.css">
+    <link rel="stylesheet" href="../css/app.css">
 </head>
 
 <body>
@@ -140,13 +140,9 @@
                     document.querySelector(".blog_content_wrap .mui-card-header .mui-media-body").innerHTML = info['author']["name"]+"<p>更新于 "+info['updated_time']+"</p>";
                     document.querySelector("#header .mui-title").innerHTML = info.title;
                     document.querySelector(".blog_content_wrap .mui-card-content").innerHTML = info.content;
-                    var a=document.getElementsByTagName('a');
-                    for(var i=0;i< a.length;i++){
-                        a[i].onclick=function(ev){
-                            ev.preventDefault();
-                            plus.runtime.openURL(this.href);
-                        }
-                    }
+
+                    that.setShareInfo( res.data.share_info );//分享设置
+                    that.setExternalUrl();
                     that.adaptImage();
                 }
             });
@@ -178,15 +174,24 @@
             //mui.previewImage();//可以预览图片
 
         },
+        setExternalUrl:function(){
+            mui(".blog_content_wrap .mui-card-content").on("tap","a",function(ev){
+                ev.preventDefault();
+                public_ops.clicked(this.href);
+            });
+        },
+        setShareInfo:function( info ){
+            this.share_info = info;
+        },
         shareMessage:function(share, ex) {
             var msg = {
                 extra: {
                     scene: ex
                 }
             };
-            msg.href = "http://m.vincentguo.cn/";
-            msg.title = "编程浪子的博客";
-            msg.content = "这是我做的app";
+            msg.href = this.share_info.url;
+            msg.title = this.share_info.title;
+            msg.content = this.share_info.content;
             msg.thumbs = ["_www/images/app_logo.png"];
             share.send(msg, function() {
                 console.log("分享到\"" + share.description + "\"成功！ ");
