@@ -8,6 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <!--标准mui.css-->
     <link rel="stylesheet" type="text/css" href="../css/mui.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/prettify.sons.css">
     <!--iconfont字体-->
     <link rel="stylesheet" href="../css/iconfont.css">
     <link rel="stylesheet" href="../css/app.css">
@@ -42,6 +43,7 @@
 <script src="../js/public.js"></script>
 <script src="../js/mui.zoom.js"></script>
 <script src="../js/mui.previewimage.js"></script>
+<script src="../js/prettify.js"></script>
 <script type="text/javascript">
     mui.init({
         swipeBack: true //启用右滑关闭功能
@@ -54,6 +56,8 @@
     window.addEventListener('getInfo',function(event){
         blog_info_ops.getBlogInfo(event.detail.id);//获得事件参数
     });
+
+    prettyPrint();
 
     var blog_info_ops = {
         eventBind:function(){
@@ -141,6 +145,9 @@
                     that.setShareInfo( res.data.share_info );//分享设置
                     that.setExternalUrl();
                     that.adaptImage();
+
+                    prettyPrint();
+
                 }
             });
         },

@@ -35,7 +35,7 @@
 <header id="header" class="mui-bar mui-bar-nav">
     <a class="mui-icon mui-icon-left-nav mui-pull-left"></a>
     <h1 class="mui-title"> 二维码/条形码 </h1>
-    <a class="mui-icon  iconfont  icon-kaideng  mui-pull-right share"></a>
+    <a class="mui-icon  iconfont  icon-more  mui-pull-right share"></a>
 </header>
 <div class="mui-content">
     <div id="bcid">
@@ -61,6 +61,7 @@
     var scan_ops = {
         eventBind:function () {
             var that = this;
+            this.opened  = false;
             // 获取窗口对象
             ws = plus.webview.currentWebview();
             // 开始扫描
@@ -73,19 +74,43 @@
             ws.show("pop-in");
 
             mui("#header").on("tap",".mui-pull-left",function(){
-                scan.close();
+                if( scan != null ){
+                    scan.close();
+                }
                 mui.back();
             });
 
-            mui("#header").on("tap",".icon-kaideng",function(){
-                if( this.classList.contains("opened") ){
-                    scan.setFlash(false);
-                    this.classList.remove("opened");
-                }else{
-                    scan.setFlash(true);
-                    this.classList.add("opened");
-                }
+            mui("#header").on("tap",".icon-more",function(){
+                var btnArray = [
+                    {title: "从相册选取二维码"},
+                    {title: "打开闪光灯"}
+                ];
+                plus.nativeUI.actionSheet({
+                    title: "操作",
+                    cancel: "取消",
+                    buttons: btnArray
+                }, function (e) {
 
+                    switch (e.index) {
+                        case 0:
+                            break;
+                        case 1:
+                            plus.gallery.pick(
+                                    function (path) {
+                                        plus.barcode.scan(path,that.onmarked,function(error){
+                                            plus.nativeUI.alert( "无法识别此图片" );
+                                            scan.start();
+                                        });
+                                    },
+                                    function (error) {
+                                        scan.start();
+                                    }, {filter: "image"});
+                            break;
+                        case 2:
+                            that.setFlash();
+                            break;
+                    }
+                });
             });
         },
         onmarked:function(type, result, file){
@@ -126,6 +151,17 @@
                     scan.start();
                 }
             });
+        },
+        setFlash:function(){
+            if( scan == null ){
+                return;
+            }
+            if( this.opened ){
+                scan.setFlash(false);
+            }else{
+                scan.setFlash(true);
+            }
+            this.opened = !this.opened;
         }
     };
 </script>

@@ -52,6 +52,10 @@
 
     mui.plusReady(function () {
         blog_ops.getBannerList();
+        mui("#header").on("tap", ".speech", function () {
+            blog_ops.setSpeech();
+        });
+
     });
 
     var blog_ops = {

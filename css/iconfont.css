@@ -13,7 +13,8 @@
 .icon-like:before { content: "\e603"; }
 .icon-book:before { content: "\e600"; }
 .icon-fenxiang:before { content: "\e602"; }
+.icon-more:before { content: "\e607"; }
 .icon-spinner:before { content: "\e605"; }
 .icon-saoma:before { content: "\e601"; }
-.icon-diancai:before { content: "\e604"; }
 .icon-kaideng:before { content: "\e606"; }
+.icon-diancai:before { content: "\e604"; }
