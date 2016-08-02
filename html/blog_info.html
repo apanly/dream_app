@@ -171,7 +171,7 @@
                 }
                 var tmp_screen_width = public_ops.getDevicecScreenWidth();
                 this.setAttribute("style","width:"+(tmp_screen_width-50)+"px;");
-                this.setAttribute("data-src",public_ops.buildPicUrl( tmp_src ,{ w:tmp_screen_width*2 } ) );
+                this.setAttribute("data-src",public_ops.buildPicUrl( tmp_src ,{ w:tmp_screen_width*2,'view_mode':0 } ) );
                 public_ops.lazyload( this );
 
             });

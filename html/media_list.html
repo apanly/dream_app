@@ -105,7 +105,7 @@
                         info = list[ idx ];
                         li = document.createElement('li');
                         li.className = 'mui-table-view-cell mui-media mui-col-xs-12';
-                        tmp_image_url = public_ops.buildPicUrl(info.image_url, { 'w': screen_width });
+                        tmp_image_url = public_ops.buildPicUrl(info.image_url, { 'w': screen_width,'view_mode':0 });
                         li.innerHTML = '<a href="javascript:void(0);">' +
                                 '<img class="mui-media-object" src="../images/blog/loading.png"  data-src="'+tmp_image_url+'"> ' +
                                 '<div class="mui-media-body">'+info.title+'</div>' +
