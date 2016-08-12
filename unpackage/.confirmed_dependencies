@@ -12,10 +12,12 @@
       "css/iconfont.css",
       "js/md5.min.js",
       "js/public.js",
-      "images/blog/loading.png"
+      "images/blog/loading.png",
+      "html/blog_list.html"
     ],
     "refer": [
-      "html/blog_info.html"
+      "html/blog_info.html",
+      "html/blog_list.html"
     ],
     "priority": 0
   },
@@ -32,10 +34,12 @@
       "css/iconfont.css",
       "js/md5.min.js",
       "js/public.js",
-      "images/blog/loading.png"
+      "images/blog/loading.png",
+      "html/book_list.html"
     ],
     "refer": [
-      "html/barcode_scan.html"
+      "html/barcode_scan.html",
+      "html/book_list.html"
     ],
     "priority": 0
   },
@@ -54,9 +58,12 @@
       "js/public.js",
       "js/mui.zoom.js",
       "js/mui.previewimage.js",
-      "images/blog/loading.png"
+      "images/blog/loading.png",
+      "html/media_list.html"
     ],
-    "refer": [],
+    "refer": [
+      "html/media_list.html"
+    ],
     "priority": 0
   },
   "html/about.html": {
@@ -81,7 +88,10 @@
       "js/mui.min.js",
       "css/iconfont.css",
       "js/public.js",
-      "js/update.js"
+      "js/update.js",
+      "html/blog.html",
+      "fonts/mui.ttf",
+      "fonts/iconfont.ttf"
     ],
     "refer": [
       "html/blog.html",
@@ -104,7 +114,9 @@
       "js/mui.previewimage.js",
       "images/waiting.png",
       "images/blog/loading.png",
-      "images/avatar.jpg"
+      "images/avatar.jpg",
+      "js/prettify.js",
+      "css/prettify.sons.css"
     ],
     "refer": [],
     "priority": 0
@@ -116,5 +128,16 @@
     ],
     "refer": [],
     "priority": 0
+  },
+  "html/blog_list.html": {
+    "refer": [
+      "html/blog_info.html"
+    ]
+  },
+  "html/media_list.html": {
+    "resources": [
+      "js/mui.zoom.js",
+      "js/mui.previewimage.js"
+    ]
   }
 }

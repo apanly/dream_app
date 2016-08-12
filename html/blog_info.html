@@ -196,6 +196,7 @@
             msg.title = this.share_info.title;
             msg.content = this.share_info.content;
             msg.thumbs = ["_www/images/app_logo.png"];
+            msg.pictures = ["_www/images/share.gif"];
             share.send(msg, function() {
                 console.log("分享到\"" + share.description + "\"成功！ ");
             }, function(e) {

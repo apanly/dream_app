@@ -136,7 +136,7 @@
 				"keystore": "",/*Android应用打包使用的密钥库文件*/
 				"password": "",/*Android应用打包使用密钥库中证书的密码*/
 				"aliasname": "",/*Android应用打包使用密钥库中证书的别名*/
-				"permissions": ["<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>","<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>","<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>","<uses-permission android:name=\"android.permission.SEND_SMS\"/>","<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>","<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>","<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>","<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>","<uses-permission android:name=\"android.permission.VIBRATE\"/>","<uses-permission android:name=\"android.permission.READ_LOGS\"/>","<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>","<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>","<uses-permission android:name=\"android.permission.CALL_PHONE\"/>","<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>","<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>","<uses-feature android:name=\"android.hardware.camera.autofocus\"/>","<uses-feature android:name=\"android.hardware.camera\"/>","<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>","<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>","<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>","<uses-permission android:name=\"android.permission.READ_SMS\"/>","<uses-permission android:name=\"android.permission.CAMERA\"/>"]
+				"permissions": ["<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>","<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>","<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>","<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>","<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>","<uses-permission android:name=\"android.permission.VIBRATE\"/>","<uses-permission android:name=\"android.permission.READ_LOGS\"/>","<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>","<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>","<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>","<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>","<uses-feature android:name=\"android.hardware.camera.autofocus\"/>","<uses-feature android:name=\"android.hardware.camera\"/>","<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>","<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>","<uses-permission android:name=\"android.permission.CAMERA\"/>"]
 			},
 			"orientation": [
 				"portrait-primary"
@@ -200,169 +200,190 @@
 					}
 				},
 				"android": {
-					"mdpi": "", /*普通屏启动图片，分辨率：240x282*/
-					"ldpi": "", /*大屏启动图片，分辨率：320x442*/
-					"hdpi": "", /*高分屏启动图片，分辨率：480x762*/
-					"xhdpi": "", /*720P高分屏启动图片，分辨率：720x1242*/
-					"xxhdpi": ""
+					"mdpi": "/Users/vincent/Desktop/app/240_280.png", /*普通屏启动图片，分辨率：240x282*/
+					"ldpi": "/Users/vincent/Desktop/app/320_440.png", /*大屏启动图片，分辨率：320x442*/
+					"hdpi": "/Users/vincent/Desktop/app/480_762.png", /*高分屏启动图片，分辨率：480x762*/
+					"xhdpi": "/Users/vincent/Desktop/app/720_1242.png", /*720P高分屏启动图片，分辨率：720x1242*/
+					"xxhdpi": "/Users/vincent/Desktop/app/1080_1882.png"
 				}
-			}
+			},"debug":false
 		}
 	},
 	"dependencies": {
-	  "pages": {
-	    "html/blog.html": {
-	      "href": "html/blog.html",
-	      "resources": [
-	        "css/mui.min.css",
-	        "fonts/mui.ttf",
-	        "css/app.css",
-	        "js/mui.min.js",
-	        "images/cbd.jpg",
-	        "images/yuantiao.jpg",
-	        "images/shuijiao.jpg",
-	        "images/muwu.jpg",
-	        "css/iconfont.css",
-	        "fonts/iconfont.ttf",
-	        "images/loading_small.png",
-	        "js/md5.min.js",
-	        "js/public.js",
-	        "images/blog/loading.png"
-	      ],
-	      "priority": 0,
-	      "refer": [
-	        "html/blog_info.html"
-	      ]
-	    },
-	    "html/book.html": {
-	      "href": "html/book.html",
-	      "resources": [
-	        "css/mui.min.css",
-	        "fonts/mui.ttf",
-	        "css/app.css",
-	        "js/mui.min.js",
-	        "images/shuijiao.jpg",
-	        "images/muwu.jpg",
-	        "images/cbd.jpg",
-	        "images/yuantiao.jpg",
-	        "css/iconfont.css",
-	        "fonts/iconfont.ttf",
-	        "images/loading_small.png",
-	        "js/md5.min.js",
-	        "js/public.js",
-	        "images/blog/loading.png"
-	      ],
-	      "priority": 1,
-	      "refer": [
-	        "html/barcode_scan.html"
-	      ]
-	    },
-	    "html/media.html": {
-	      "href": "html/media.html",
-	      "resources": [
-	        "css/mui.min.css",
-	        "fonts/mui.ttf",
-	        "css/app.css",
-	        "js/mui.min.js",
-	        "images/shuijiao.jpg",
-	        "images/muwu.jpg",
-	        "images/cbd.jpg",
-	        "images/yuantiao.jpg",
-	        "css/iconfont.css",
-	        "fonts/iconfont.ttf",
-	        "images/loading_small.png",
-	        "js/md5.min.js",
-	        "js/public.js",
-	        "js/mui.zoom.js",
-	        "js/mui.previewimage.js",
-	        "images/blog/loading.png"
-	      ],
-	      "priority": 2,
-	      "refer": []
-	    },
-	    "html/about.html": {
-	      "href": "html/about.html",
-	      "resources": [
-	        "css/mui.min.css",
-	        "fonts/mui.ttf",
-	        "css/app.css",
-	        "css/feedback.css",
-	        "images/iconfont-tianjia.png",
-	        "js/mui.min.js",
-	        "js/mui.view.js",
-	        "js/feedback.js",
-	        "images/logo.png",
-	        "images/loading_small.png",
-	        "images/avatar.jpg"
-	      ],
-	      "priority": 3,
-	      "refer": []
-	    },
-	    "index.html": {
-	      "href": "index.html",
-	      "resources": [
-	        "css/mui.min.css",
-	        "fonts/mui.ttf",
-	        "js/mui.min.js",
-	        "css/iconfont.css",
-	        "fonts/iconfont.ttf",
-	        "js/public.js",
-	        "js/update.js"
-	      ],
-	      "refer": [
-	        "html/blog.html",
-	        "html/book.html",
-	        "html/media.html",
-	        "html/about.html"
-	      ],
-	      "priority": 0
-	    },
-	    "html/blog_info.html": {
-	      "href": "html/blog_info.html",
-	      "resources": [
-	        "css/mui.min.css",
-	        "fonts/mui.ttf",
-	        "css/iconfont.css",
-	        "fonts/iconfont.ttf",
-	        "css/app.css",
-	        "images/loading_small.png",
-	        "js/mui.min.js",
-	        "js/md5.min.js",
-	        "js/public.js",
-	        "js/mui.zoom.js",
-	        "js/mui.previewimage.js",
-	        "images/waiting.png",
-	        "images/blog/loading.png",
-	        "images/avatar.jpg"
-	      ],
-	      "priority": 0
-	    },
-	    "html/barcode_scan.html": {
-	      "href": "html/barcode_scan.html",
-	      "resources": [
-	        "js/common.js"
-	      ],
-	      "priority": 1
-	    }
-	  },
-	  "idle": {
-	    "resources": [
-	      "images/blog/blog_default.jpg",
-	      "js/mui.pullToRefresh.js",
-	      "preview/4.jpg",
-	      "images/app_logo.png",
-	      "js/mui.pullToRefresh.material.js",
-	      "images/loading_small.gif",
-	      "html/external_site.html",
-	      "js/mui.lazyload.js",
-	      "js/mui.lazyload.img.js",
-	      "html/blog_search.html",
-	      "preview/2.jpg",
-	      "preview/1.jpg",
-	      "preview/3.jpg",
-	      "readme.md"
-	    ]
-	  }
+		"pages": {
+			"html/blog.html": {
+				"href": "html/blog.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"css/app.css",
+					"js/mui.min.js",
+					"images/cbd.jpg",
+					"images/yuantiao.jpg",
+					"images/shuijiao.jpg",
+					"images/muwu.jpg",
+					"css/iconfont.css",
+					"fonts/iconfont.ttf",
+					"images/loading_small.png",
+					"js/md5.min.js",
+					"js/public.js",
+					"images/blog/loading.png",
+					"html/blog_list.html"
+				],
+				"priority": 0,
+				"refer": [
+					"html/blog_info.html"
+				]
+			},
+			"html/book.html": {
+				"href": "html/book.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"css/app.css",
+					"js/mui.min.js",
+					"images/shuijiao.jpg",
+					"images/muwu.jpg",
+					"images/cbd.jpg",
+					"images/yuantiao.jpg",
+					"css/iconfont.css",
+					"fonts/iconfont.ttf",
+					"images/loading_small.png",
+					"js/md5.min.js",
+					"js/public.js",
+					"images/blog/loading.png",
+					"html/book_list.html"
+				],
+				"priority": 1,
+				"refer": [
+					"html/barcode_scan.html"
+				]
+			},
+			"html/media.html": {
+				"href": "html/media.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"css/app.css",
+					"js/mui.min.js",
+					"images/shuijiao.jpg",
+					"images/muwu.jpg",
+					"images/cbd.jpg",
+					"images/yuantiao.jpg",
+					"css/iconfont.css",
+					"fonts/iconfont.ttf",
+					"images/loading_small.png",
+					"js/md5.min.js",
+					"js/public.js",
+					"js/mui.zoom.js",
+					"js/mui.previewimage.js",
+					"images/blog/loading.png",
+					"html/media_list.html"
+				],
+				"priority": 2,
+				"refer": []
+			},
+			"html/about.html": {
+				"href": "html/about.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"css/app.css",
+					"css/feedback.css",
+					"images/iconfont-tianjia.png",
+					"js/mui.min.js",
+					"js/mui.view.js",
+					"js/feedback.js",
+					"images/logo.png",
+					"images/loading_small.png",
+					"images/avatar.jpg"
+				],
+				"priority": 3,
+				"refer": []
+			},
+			"index.html": {
+				"href": "index.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"js/mui.min.js",
+					"css/iconfont.css",
+					"fonts/iconfont.ttf",
+					"js/public.js",
+					"js/update.js",
+					"html/blog.html"
+				],
+				"refer": [
+					"html/book.html",
+					"html/media.html",
+					"html/about.html"
+				],
+				"priority": 0
+			},
+			"html/blog_info.html": {
+				"href": "html/blog_info.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"css/iconfont.css",
+					"fonts/iconfont.ttf",
+					"css/app.css",
+					"images/loading_small.png",
+					"js/mui.min.js",
+					"js/md5.min.js",
+					"js/public.js",
+					"js/mui.zoom.js",
+					"js/mui.previewimage.js",
+					"images/waiting.png",
+					"images/blog/loading.png",
+					"images/avatar.jpg",
+					"js/prettify.js",
+					"css/prettify.sons.css"
+				],
+				"priority": 0,
+				"refer": []
+			},
+			"html/barcode_scan.html": {
+				"href": "html/barcode_scan.html",
+				"resources": [
+					"js/common.js"
+				],
+				"priority": 1
+			},
+			"html/blog_list.html": {
+				"resources": [],
+				"refer": [
+					"html/blog_info.html"
+				],
+				"priority": 0
+			},
+			"html/media_list.html": {
+				"resources": [
+					"js/mui.zoom.js",
+					"js/mui.previewimage.js"
+				],
+				"refer": [],
+				"priority": 0
+			}
+		},
+		"idle": {
+			"resources": [
+				"images/blog/blog_default.jpg",
+				"js/mui.pullToRefresh.js",
+				"preview/4.jpg",
+				"images/app_logo.png",
+				"js/mui.pullToRefresh.material.js",
+				"images/loading_small.gif",
+				"html/external_site.html",
+				"js/mui.lazyload.js",
+				"js/mui.lazyload.img.js",
+				"html/blog_search.html",
+				"preview/2.jpg",
+				"preview/1.jpg",
+				"preview/3.jpg",
+				"readme.md"
+			]
+		}
 	},
 	"unpackage":[
 	  "preview/1.jpg",
